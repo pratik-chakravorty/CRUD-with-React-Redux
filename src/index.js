@@ -11,6 +11,7 @@ import postReducer from './reducers/postReducer';
 import errorReducer from './reducers/errorReducer';
 import loadingReducer from './reducers/loadingReducer';
 import authReducer from './reducers/authReducer';
+import editErrorReducer from './reducers/editErrorReducer';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
@@ -22,7 +23,8 @@ const reducer = combineReducers({
     posts: postReducer,
     errors: errorReducer,
     loading: loadingReducer,
-    authed: authReducer
+    authed: authReducer,
+    editErrors: editErrorReducer
 })
 
 const store = createStore(reducer, applyMiddleware(ReduxThunk));
