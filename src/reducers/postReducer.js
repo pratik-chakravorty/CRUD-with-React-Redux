@@ -25,6 +25,22 @@ const postReducer = (state = [], action) => {
             })
         case 'ADDING_POST':
             return state;
+        case 'POST_EDIT_ERROR':
+            return state.map((post) => {
+                if (post.id === action.id) {
+                    post.errorMessage = action.message;
+                    return post;
+                }
+                return post;
+            })
+        case 'CLEAR_ERROR':
+            return state.map((post) => {
+                if (post.id === action.id) {
+                    post.errorMessage = '';
+                    return post;
+                }
+                return post;
+            })
         default:
             return state
     }

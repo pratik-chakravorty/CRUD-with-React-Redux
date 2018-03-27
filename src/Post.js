@@ -37,12 +37,12 @@ class Post extends Component {
         const title = this.titleInput.value;
         this.props.dispatch({ type: 'NO_ERROR_RECEIVED' })
         //validations
-        if (title.length === 0 || title.length <= 5) {
+        if (title.length === 0 || title.length <= 5 || title.trim() === "") {
             this.props.dispatch({ type: 'POST_ERROR', message: 'Title has to be more than 5 characters' })
             return;
         }
         const message = this.messageInput.value;
-        if (message.length <= 10) {
+        if (message.length <= 10 || message.trim() === "") {
             this.props.dispatch({ type: 'POST_ERROR', message: 'Message has to be more than 10 characters' })
             return;
         }
@@ -53,6 +53,7 @@ class Post extends Component {
             title,
             message,
             editing: false,
+            errorMessage: ''
         }
         const postRef1 = firebase.database().ref('users/')
         const postKey = postRef1.push()
@@ -64,7 +65,8 @@ class Post extends Component {
             message: message,
             editing: false,
             uid: uid,
-            key: postKey.key
+            key: postKey.key,
+            errorMessage: ''
         })
 
         if (this.props.posts.editing) {

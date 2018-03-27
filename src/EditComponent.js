@@ -10,13 +10,22 @@ class EditComponent extends Component {
         e.preventDefault()
         const title = this.getTitleInput.value
         const message = this.getMessageInput.value
+        this.props.dispatch({ type: 'CLEAR_ERROR', id: this.props.post.id })
 
-        if (title.length === 0 || title.length <= 5) {
-            this.props.dispatch({ type: 'POST_EDIT_ERROR', message: 'Title has to be more than 5 characters' })
+        if (title.length === 0 || title.length <= 5 || title.trim() === "") {
+            this.props.dispatch({
+                type: 'POST_EDIT_ERROR', message: 'Title has to be more than 5 characters', id:
+                    this.props.post.id
+            })
+            this.forceUpdate()
             return;
         }
-        if (message.length <= 10) {
-            this.props.dispatch({ type: 'POST_EDIT_ERROR', message: 'Message has to be more than 10 characters' })
+        if (message.length === 0 || message.length <= 10 || message.trim() === "") {
+            this.props.dispatch({
+                type: 'POST_EDIT_ERROR', message: 'Message has to be more than 10 characters',
+                id: this.props.post.id
+            })
+            this.forceUpdate()
             return;
         }
         this.props.dispatch({
@@ -42,17 +51,14 @@ class EditComponent extends Component {
                 <input type="text" ref={(input) => this.getTitleInput = input} defaultValue={this.props.post.title} /> <br />
                 <textarea ref={(input) => this.getMessageInput = input} defaultValue={this.props.post.message} cols="28" rows="5"></textarea><br />
                 <button>Edit</button>
-
-                {this.props.editErrors ? <p style={{ color: '#ff7777' }}>{this.props.editErrors.message}</p> : null}
+                {console.log(this.props.post.errorMessage)}
+                {this.props.post.errorMessage ? <p style={{ color: '#ff7777' }}>{this.props.post.errorMessage}</p> : null}
             </form >
         );
     }
 }
 
 
-const mapStateToProps = (state) => ({
-    editErrors: state.editErrors
 
-})
 
-export default connect(mapStateToProps)(EditComponent);
+export default connect()(EditComponent);
